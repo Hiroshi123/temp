@@ -1,7 +1,7 @@
 require 'torch'
 require 'xlua'
 require 'optim'
-require 'gnuplot'
+--require 'gnuplot'
 require 'pl'
 require 'trepl'
 require 'adaMax_binary_clip_shift'
@@ -59,6 +59,11 @@ cmd:option('-title','model1','a name of title of a chart')
 cmd:option('-imageFileExtension','svg','image file extension, among png,svg,eps,pdf')
 cmd:option('-chartFileName','chart1','when you save a plot, what do you call it?')
 
+cmd:option('-numHid',1024,'number of hidden layers on fully connected layer')
+cmd:option('-convLayerN',6,'number of layers')
+cmd:option('-channel',1,'number of channel with respect to default channel')
+
+
 torch.manualSeed(432)
 opt = cmd:parse(arg or {})
 opt.network = opt.modelsFolder .. paths.basename(opt.network, '.lua')
@@ -70,7 +75,7 @@ opt.preProcDir = paths.concat(opt.preProcDir, opt.dataset .. '/')
 --opt.LRDecay=torch.pow((2e-6/opt.LR),(1./500));
 --
 
-os.execute('mk1ir -p ' .. opt.preProcDir)
+os.execute('mkdir -p ' .. opt.preProcDir)
 torch.setnumthreads(opt.threads)
 
 torch.setdefaulttensortype('torch.FloatTensor')
@@ -82,11 +87,10 @@ end
 -- Model + Loss:
 
 outputN = 10
-
 if opt.dataset == 'Cifar100' then
    outputN = 100
 end
-
+print("outputN",outputN)
 
 local modelAll = require(opt.network)
 
@@ -139,7 +143,8 @@ end
 if opt.nGPU > 1 then
     local net = model
     model = nn.DataParallelTable(1)
-    for i = 1, opt.nGPU do
+    --for i = 1, opt.nGPU do
+    for i = opt.devid, opt.devid + opt.nGPU - 1 do
         cutorch.setDevice(i)
         model:add(net:clone():cuda(), i)  -- Use the ith GPU
     end
@@ -251,7 +256,6 @@ local function Forward(Data, train)
     if type(y) == 'table' then --table results - always take first prediction
       y = y[1]
     end
-    
     confusion:batchAdd(y,one_hot_yt)
     xlua.progress(NumSamples, SizeData)
     if math.fmod(NumBatches,100)==0 then
@@ -262,6 +266,7 @@ local function Forward(Data, train)
 end
 
 ------------------------------
+
 local function Train(Data)
   model:training()
   return Forward(Data, true)
@@ -277,7 +282,7 @@ end
 epoch = 1
 
 print '\n==> Starting Training\n'
-require 'plot' 
+--require 'plot' 
 
 --trainP = {}
 --testP  = {}
@@ -341,26 +346,33 @@ while epoch ~= opt.epoch do
     testA [epoch] = ErrTest
     
     --if (epoch % 10 == 0) then
-    plotChart()
+    --plotChart()
     --end
     
     Log:add{['Training Error']= ErrTrain, ['Valid Error'] = ErrValid, ['Test Error'] = ErrTest}
     --Log:add{['Training Error']= LossTrain, ['Valid Error'] = LossValid, ['Test Error'] = LossTest}
 
-    if opt.visualize == 1 then
-        Log:style{['Training Error'] = '-',['Validation Error'] = '-', ['Test Error'] = '-'}
-	--Log:setNames(opt.title)
-        Log:plot()
-    end
+    -- if opt.visualize == 1 then
+    --     Log:style{['Training Error'] = '-',['Validation Error'] = '-', ['Test Error'] = '-'}
+    -- 	--Log:setNames(opt.title)
+    --     Log:plot()
+    -- end
     
     --optimState.learningRate=optimState.learningRate*opt.LRDecay
     
-    if optimState.learningRate - opt.LRDecayPerEpoch <= 0  then
-       print("no update for learning rate")
-       --optimState.learningRate=optimState.learningRate - opt.LRDecayPerEpoch --0.5
+    if epoch%20==0 then
+      optimState.learningRate=optimState.learningRate*0.5
     else
-      optimState.learningRate=optimState.learningRate - opt.LRDecayPerEpoch
+      optimState.learningRate=optimState.learningRate
     end
+    
+    
+    -- if optimState.learningRate - opt.LRDecayPerEpoch <= 0  then
+    --    print("no update for learning rate")
+    --    --optimState.learningRate=optimState.learningRate - opt.LRDecayPerEpoch --0.5
+    -- else
+    --   optimState.learningRate=optimState.learningRate - opt.LRDecayPerEpoch
+    -- end
 
     print('-------------------LR-------------------')
     print(optimState.learningRate)
