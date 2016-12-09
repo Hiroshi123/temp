@@ -125,7 +125,23 @@ elseif Dataset == 'SVHN' then
       torch.save(LCNfile_test,TestData)
     end
     Classes = {1,2,3,4,5,6,7,8,9,0}
+elseif Dataset == "Caltech101" or Dataset == "Caltech256" then
+   local file_valid    = paths.concat(PreProcDir, 'validSet.t7')
+   local file_train    = paths.concat(PreProcDir, 'trainSet.t7')
+   local file_test     = paths.concat(PreProcDir, 'testSet.t7')
+   local file_label    = paths.concat(PreProcDir, 'label.t7')
+
+   if (paths.filep(file_valid) and paths.filep(file_train) and paths.filep(file_test)) then
+      ValidData=torch.load(file_valid)
+      TrainData=torch.load(file_train)
+      TestData =torch.load(file_test)
+      labelTable = torch.load(file_label)
+      --TrainData.data = Traindata['data'] 
+      --TestData.data  = TestData['data']                                                                           
+   end
+   Classes = labelTable
 end
+
 
 TrainData.data = TrainData.data:float()
 TestData.data = TestData.data:float()
@@ -139,6 +155,7 @@ local TrainDataProvider = DataProvider.Container{
   CopyData = false,
   TensorType = 'torch.FloatTensor',
 }
+
 local TestDataProvider = DataProvider.Container{
   Name = 'TestData',
   CachePrefix = nil,
@@ -147,9 +164,10 @@ local TestDataProvider = DataProvider.Container{
   MaxNumItems = 1e6,
   CopyData = false,
   TensorType = 'torch.FloatTensor',
-
 }
+
 local ValidDataProvider = DataProvider.Container{
+   
   Name = 'ValidData',
   CachePrefix = nil,
   CacheFiles = false,
@@ -161,6 +179,8 @@ local ValidDataProvider = DataProvider.Container{
 }
 
 --Preprocesss
+
+--[[
 
   if format == 'yuv' then
     require 'image'
@@ -210,7 +230,7 @@ local ValidDataProvider = DataProvider.Container{
       end
     end
 
-
+--]]
 
 return{
     TrainData = TrainDataProvider,

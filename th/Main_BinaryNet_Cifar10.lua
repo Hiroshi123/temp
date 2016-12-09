@@ -87,9 +87,16 @@ end
 -- Model + Loss:
 
 outputN = 10
+
 if opt.dataset == 'Cifar100' then
    outputN = 100
+elseif opt.dataset == 'Caltech101' then
+   outputN = 102
+elseif opt.dataset == 'Caltech257' then
+   outputN = 257
 end
+
+
 print("outputN",outputN)
 
 local modelAll = require(opt.network)
@@ -220,7 +227,6 @@ local function Forward(Data, train)
   local NumSamples = 0
   local NumBatches = 0
   local lossVal = 0
-
   while NumSamples < SizeData do
     MiniBatch:getNextBatch()
     local y, currLoss
@@ -256,6 +262,7 @@ local function Forward(Data, train)
     if type(y) == 'table' then --table results - always take first prediction
       y = y[1]
     end
+    
     confusion:batchAdd(y,one_hot_yt)
     xlua.progress(NumSamples, SizeData)
     if math.fmod(NumBatches,100)==0 then
@@ -282,8 +289,8 @@ end
 epoch = 1
 
 print '\n==> Starting Training\n'
---require 'plot' 
 
+--require 'plot' 
 --trainP = {}
 --testP  = {}
 
@@ -299,8 +306,9 @@ while epoch ~= opt.epoch do
     
     local LossTrain = Train(data.TrainData)
     if epoch%10==0 then
-       torch.save(netFilename, model)
+       torch.save(netFilename, model:float())
     end
+    model:cuda()
     confusion:updateValids()
     
     local ErrTrain = (1-confusion.totalValid)
@@ -315,6 +323,7 @@ while epoch ~= opt.epoch do
     --validation
     confusion:zero()
     local LossValid = Test(data.ValidData)
+    
     confusion:updateValids()
     local ErrValid = (1-confusion.totalValid)
     
@@ -359,7 +368,7 @@ while epoch ~= opt.epoch do
     -- end
     
     --optimState.learningRate=optimState.learningRate*opt.LRDecay
-    
+
     if epoch%20==0 then
       optimState.learningRate=optimState.learningRate*0.5
     else
