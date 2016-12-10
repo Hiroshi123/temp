@@ -1,0 +1,35 @@
+2016-12-07 04:41:20 [program started on Wed Dec  7 04:41:20 2016] 
+2016-12-07 04:41:20 [command line arguments] 
+2016-12-07 04:41:20 stcWeights false 
+2016-12-07 04:41:20 modelsFolder ./Models/ 
+2016-12-07 04:41:20 chartFileName chart1 
+2016-12-07 04:41:20 LR 0.015625 
+2016-12-07 04:41:20 preProcDir /dev/shm/temp/th/PreProcData/Cifar10 
+2016-12-07 04:41:20 devid 2 
+2016-12-07 04:41:20 LRDecay 0 
+2016-12-07 04:41:20 batchSize 64 
+2016-12-07 04:41:20 whiten true 
+2016-12-07 04:41:20 dp_prepro false 
+2016-12-07 04:41:20 network ./Models/Cifar10_Default 
+2016-12-07 04:41:20 stcNeurons true 
+2016-12-07 04:41:20 constBatchSize false 
+2016-12-07 04:41:20 type cuda 
+2016-12-07 04:41:20 save /dev/shm/temp/th/Results/Cifar10/model00001 
+2016-12-07 04:41:20 augment false 
+2016-12-07 04:41:20 epoch -1 
+2016-12-07 04:41:20 title model1 
+2016-12-07 04:41:20 nGPU 8 
+2016-12-07 04:41:20 format rgb 
+2016-12-07 04:41:20 SBN true 
+2016-12-07 04:41:20 dataset Cifar10 
+2016-12-07 04:41:20 normalization simple 
+2016-12-07 04:41:20 momentum 0 
+2016-12-07 04:41:20 visualize 1 
+2016-12-07 04:41:20 LRDecayPerEpoch 0.0001 
+2016-12-07 04:41:20 threads 8 
+2016-12-07 04:41:20 optimization adam 
+2016-12-07 04:41:20 load  
+2016-12-07 04:41:20 weightDecay 0 
+2016-12-07 04:41:20 runningVal false 
+2016-12-07 04:41:20 imageFileExtension svg 
+2016-12-07 04:41:20 [----------------------] 
