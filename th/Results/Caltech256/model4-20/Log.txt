@@ -1,0 +1,78 @@
+2016-12-10 06:48:51 [program started on Sat Dec 10 06:48:51 2016] 
+2016-12-10 06:48:51 [command line arguments] 
+2016-12-10 06:48:51 stcWeights false 
+2016-12-10 06:48:51 LR 0.015625 
+2016-12-10 06:48:51 batchSize 64 
+2016-12-10 06:48:51 network ./Models/Cifar10_Custom 
+2016-12-10 06:48:51 stcNeurons true 
+2016-12-10 06:48:51 constBatchSize false 
+2016-12-10 06:48:51 chartFileName chart1 
+2016-12-10 06:48:51 dp_prepro false 
+2016-12-10 06:48:51 nGPU 1 
+2016-12-10 06:48:51 dataset Caltech256 
+2016-12-10 06:48:51 type cuda 
+2016-12-10 06:48:51 momentum 0 
+2016-12-10 06:48:51 threads 8 
+2016-12-10 06:48:51 weightDecay 0 
+2016-12-10 06:48:51 runningVal false 
+2016-12-10 06:48:51 convLayerN 4 
+2016-12-10 06:48:51 LRDecay 0 
+2016-12-10 06:48:51 numHid 1024 
+2016-12-10 06:48:51 save /dev/shm/clone/temp/th/Results/Caltech256/model4-20 
+2016-12-10 06:48:51 augment false 
+2016-12-10 06:48:51 epoch -1 
+2016-12-10 06:48:51 modelsFolder ./Models/ 
+2016-12-10 06:48:51 format rgb 
+2016-12-10 06:48:51 preProcDir /dev/shm/clone/temp/th/PreProcData/Caltech256 
+2016-12-10 06:48:51 imageFileExtension svg 
+2016-12-10 06:48:51 channel 2 
+2016-12-10 06:48:51 devid 1 
+2016-12-10 06:48:51 visualize 1 
+2016-12-10 06:48:51 LRDecayPerEpoch 0.0001 
+2016-12-10 06:48:51 optimization adam 
+2016-12-10 06:48:51 SBN true 
+2016-12-10 06:48:51 normalization simple 
+2016-12-10 06:48:51 title model1 
+2016-12-10 06:48:51 load  
+2016-12-10 06:48:51 whiten true 
+2016-12-10 06:48:51 [----------------------] 
+2016-12-10 06:48:53 ==> Network 
+2016-12-10 06:48:53 nn.Sequential {
+  [input -> (1) -> (2) -> (3) -> (4) -> (5) -> (6) -> (7) -> (8) -> (9) -> (10) -> (11) -> (12) -> (13) -> (14) -> (15) -> (16) -> (17) -> (18) -> (19) -> (20) -> (21) -> (22) -> (23) -> (24) -> (25) -> (26) -> (27) -> (28) -> (29) -> output]
+  (1): cudnnBinarySpatialConvolution(3 -> 256, 3x3, 1,1, 1,1)
+  (2): SpatialBatchNormalizationShiftPow2
+  (3): nn.HardTanh
+  (4): BinarizedNeurons
+  (5): cudnnBinarySpatialConvolution(256 -> 256, 3x3, 1,1, 1,1)
+  (6): cudnn.SpatialMaxPooling(2x2, 2,2)
+  (7): SpatialBatchNormalizationShiftPow2
+  (8): nn.HardTanh
+  (9): BinarizedNeurons
+  (10): cudnnBinarySpatialConvolution(256 -> 512, 3x3, 1,1, 1,1)
+  (11): SpatialBatchNormalizationShiftPow2
+  (12): nn.HardTanh
+  (13): BinarizedNeurons
+  (14): cudnnBinarySpatialConvolution(512 -> 512, 3x3, 1,1, 1,1)
+  (15): cudnn.SpatialMaxPooling(2x2, 2,2)
+  (16): SpatialBatchNormalizationShiftPow2
+  (17): nn.HardTanh
+  (18): BinarizedNeurons
+  (19): nn.View(32768)
+  (20): BinaryLinear(32768 -> 1024)
+  (21): BatchNormalizationShiftPow2
+  (22): nn.HardTanh
+  (23): BinarizedNeurons
+  (24): BinaryLinear(1024 -> 1024)
+  (25): BatchNormalizationShiftPow2
+  (26): nn.HardTanh
+  (27): BinarizedNeurons
+  (28): BinaryLinear(1024 -> 255)
+  (29): nn.BatchNormalization
+} 
+2016-12-10 06:48:53 ==>39011325 Parameters 
+2016-12-10 06:48:53 ==> Loss 
+2016-12-10 06:48:53 SqrtHingeEmbeddingCriterion 
+2016-12-10 06:48:53 
+==> Starting Training
+ 
+2016-12-10 06:48:53 Epoch 1 
