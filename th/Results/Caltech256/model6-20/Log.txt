@@ -1,0 +1,123 @@
+2016-12-10 01:33:47 [program started on Sat Dec 10 01:33:47 2016] 
+2016-12-10 01:33:47 [command line arguments] 
+2016-12-10 01:33:47 stcWeights false 
+2016-12-10 01:33:47 LR 0.015625 
+2016-12-10 01:33:47 batchSize 100 
+2016-12-10 01:33:47 network ./Models/Cifar10_Custom 
+2016-12-10 01:33:47 stcNeurons true 
+2016-12-10 01:33:47 constBatchSize false 
+2016-12-10 01:33:47 chartFileName chart1 
+2016-12-10 01:33:47 dp_prepro false 
+2016-12-10 01:33:47 nGPU 1 
+2016-12-10 01:33:47 dataset Caltech256 
+2016-12-10 01:33:47 type cuda 
+2016-12-10 01:33:47 momentum 0 
+2016-12-10 01:33:47 threads 8 
+2016-12-10 01:33:47 weightDecay 0 
+2016-12-10 01:33:47 runningVal false 
+2016-12-10 01:33:47 convLayerN 6 
+2016-12-10 01:33:47 LRDecay 0 
+2016-12-10 01:33:47 numHid 1024 
+2016-12-10 01:33:47 save /dev/shm/clone/temp/th/Results/Caltech256/model6-20 
+2016-12-10 01:33:47 augment false 
+2016-12-10 01:33:47 epoch -1 
+2016-12-10 01:33:47 modelsFolder ./Models/ 
+2016-12-10 01:33:47 format rgb 
+2016-12-10 01:33:47 preProcDir /dev/shm/clone/temp/th/PreProcData/Caltech256 
+2016-12-10 01:33:47 imageFileExtension svg 
+2016-12-10 01:33:47 channel 2 
+2016-12-10 01:33:47 devid 16 
+2016-12-10 01:33:47 visualize 1 
+2016-12-10 01:33:47 LRDecayPerEpoch 0.0001 
+2016-12-10 01:33:47 optimization adam 
+2016-12-10 01:33:47 SBN true 
+2016-12-10 01:33:47 normalization simple 
+2016-12-10 01:33:47 title model1 
+2016-12-10 01:33:47 load  
+2016-12-10 01:33:47 whiten true 
+2016-12-10 01:33:47 [----------------------] 
+2016-12-10 01:33:49 ==> Network 
+2016-12-10 01:33:49 nn.Sequential {
+  [input -> (1) -> (2) -> (3) -> (4) -> (5) -> (6) -> (7) -> (8) -> (9) -> (10) -> (11) -> (12) -> (13) -> (14) -> (15) -> (16) -> (17) -> (18) -> (19) -> (20) -> (21) -> (22) -> (23) -> (24) -> (25) -> (26) -> (27) -> (28) -> (29) -> (30) -> (31) -> (32) -> (33) -> (34) -> (35) -> (36) -> (37) -> (38) -> output]
+  (1): cudnnBinarySpatialConvolution(3 -> 256, 3x3, 1,1, 1,1)
+  (2): SpatialBatchNormalizationShiftPow2
+  (3): nn.HardTanh
+  (4): BinarizedNeurons
+  (5): cudnnBinarySpatialConvolution(256 -> 256, 3x3, 1,1, 1,1)
+  (6): cudnn.SpatialMaxPooling(2x2, 2,2)
+  (7): SpatialBatchNormalizationShiftPow2
+  (8): nn.HardTanh
+  (9): BinarizedNeurons
+  (10): cudnnBinarySpatialConvolution(256 -> 512, 3x3, 1,1, 1,1)
+  (11): SpatialBatchNormalizationShiftPow2
+  (12): nn.HardTanh
+  (13): BinarizedNeurons
+  (14): cudnnBinarySpatialConvolution(512 -> 512, 3x3, 1,1, 1,1)
+  (15): cudnn.SpatialMaxPooling(2x2, 2,2)
+  (16): SpatialBatchNormalizationShiftPow2
+  (17): nn.HardTanh
+  (18): BinarizedNeurons
+  (19): cudnnBinarySpatialConvolution(512 -> 1024, 3x3, 1,1, 1,1)
+  (20): SpatialBatchNormalizationShiftPow2
+  (21): nn.HardTanh
+  (22): BinarizedNeurons
+  (23): cudnnBinarySpatialConvolution(1024 -> 1024, 3x3, 1,1, 1,1)
+  (24): cudnn.SpatialMaxPooling(2x2, 2,2)
+  (25): SpatialBatchNormalizationShiftPow2
+  (26): nn.HardTanh
+  (27): BinarizedNeurons
+  (28): nn.View(16384)
+  (29): BinaryLinear(16384 -> 1024)
+  (30): BatchNormalizationShiftPow2
+  (31): nn.HardTanh
+  (32): BinarizedNeurons
+  (33): BinaryLinear(1024 -> 1024)
+  (34): BatchNormalizationShiftPow2
+  (35): nn.HardTanh
+  (36): BinarizedNeurons
+  (37): BinaryLinear(1024 -> 255)
+  (38): nn.BatchNormalization
+} 
+2016-12-10 01:33:49 ==>36396029 Parameters 
+2016-12-10 01:33:49 ==> Loss 
+2016-12-10 01:33:49 SqrtHingeEmbeddingCriterion 
+2016-12-10 01:33:49 
+==> Starting Training
+ 
+2016-12-10 01:33:49 Epoch 1 
+2016-12-10 01:43:11 Training Error = 0.98223350253807 
+2016-12-10 01:43:11 Training Loss = 0.16853406150223 
+2016-12-10 01:43:26 Valid Error = 0.93934855859229 
+2016-12-10 01:43:26 Valid Loss = 0.015760758380386 
+2016-12-10 01:43:44 Test Error = 0.9514988211519 
+2016-12-10 01:43:44 Test Loss = 0.015813436874327 
+2016-12-10 01:43:44 -------------------LR------------------- 
+2016-12-10 01:43:44 0.015625 
+2016-12-10 01:43:44 Epoch 2 
+2016-12-10 01:53:05 Training Error = 0.96142964134143 
+2016-12-10 01:53:05 Training Loss = 0.016182564037224 
+2016-12-10 01:53:21 Valid Error = 0.93934855859229 
+2016-12-10 01:53:21 Valid Loss = 0.01559411324555 
+2016-12-10 01:53:38 Test Error = 0.9514988211519 
+2016-12-10 01:53:38 Test Loss = 0.015612011843052 
+2016-12-10 01:53:38 -------------------LR------------------- 
+2016-12-10 01:53:38 0.015625 
+2016-12-10 01:53:38 Epoch 3 
+2016-12-10 02:03:29 Training Error = 0.94507780644088 
+2016-12-10 02:03:29 Training Loss = 0.015742207803573 
+2016-12-10 02:03:45 Valid Error = 0.93448146761513 
+2016-12-10 02:03:45 Valid Loss = 0.015520301726843 
+2016-12-10 02:04:02 Test Error = 0.94610980127989 
+2016-12-10 02:04:02 Test Loss = 0.015540570078188 
+2016-12-10 02:04:02 -------------------LR------------------- 
+2016-12-10 02:04:02 0.015625 
+2016-12-10 02:04:02 Epoch 4 
+2016-12-10 02:13:41 Training Error = 0.93105600399434 
+2016-12-10 02:13:41 Training Loss = 0.015562184310948 
+2016-12-10 02:13:56 Valid Error = 0.9543242231374 
+2016-12-10 02:13:56 Valid Loss = 0.015633647726536 
+2016-12-10 02:14:13 Test Error = 0.95318288986191 
+2016-12-10 02:14:13 Test Loss = 0.015624648698361 
+2016-12-10 02:14:13 -------------------LR------------------- 
+2016-12-10 02:14:13 0.015625 
+2016-12-10 02:14:13 Epoch 5 
