@@ -5,11 +5,34 @@ require 'Models/SpatialBatchNormalizationShiftPow2'
 require 'Models/BatchNormalizationShiftPow2'
 require 'Models/BinarizedNeurons'
 require 'Models/BinaryLinear'
+--require 'itorch'
 
-require 'itorch'
+cmd = torch.CmdLine()
+cmd:option('-pass','./Results/Cifar100/model06','pass')
+cmd:option('-nGPU',1,'')
+cmd:option('-GPU',1,'')
 
+opt = cmd:parse(arg or {})
 
-local obj =  torch.load('./Results/model06/Net')
+dir = opt.pass
+
+ps = paths.concat(opt.pass,'Net')
+
+cutorch.setDevice(1)
+cutorch.setHeapTracking(true)
+
+if opt.GPU == 1 then
+   TensorType = 'torch.CudaTensor'
+   if opt.nGPU > 1 then
+      model = nn.DataParallelTable(1)
+      for i = 1, opt.nGPU do
+	 cutorch.setDevice(i)
+	 --model:add(net:clone():cuda(), i)  -- Use the ith GPU
+      end
+    end
+end
+
+local obj =  torch.load(ps)
 
 function containsValue(value)
     return _secondaryTable.value ~= nil
@@ -19,10 +42,41 @@ end
 
 print(obj:size())
 
+function makeDataParallel(model, nGPU)
+
+      print('converting module to nn.DataParallelTable')
+      assert(nGPU <= cutorch.getDeviceCount(), 'number of GPUs less than nGPU specified')
+      local model_single = model
+      
+      model = nn.DataParallelTable(1)
+      for i=1, nGPU do
+         cutorch.setDevice(i)
+         model:add(model_single:clone():cuda(), i)
+      end      
+
+   --cutorch.setDevice(opt.GPU)
+   return model
+end
+
+
+if torch.type(obj) == 'nn.DataParallelTable' then
+   print("huuuuuu")
+   obj = obj:get(1):float()
+   --obj = 
+   makeDataParallel(obj:get(1):float(), opt.nGPU)
+   print(obj:size())
+end
+
+
 weightN = 0
 
 
 storeW = {}
+
+print(obj)
+
+--local net = model
+
 
 for i=1,obj:size() do
    
@@ -47,6 +101,7 @@ for i=1,obj:size() do
 	 local filters = obj:get(i).weightB:float()
 	 filters = filters:transpose(1,2)
 	 print(filters:size())
+	 --[[
 	 for j=1,3 do
 
 	    filter = filters[j]
@@ -66,7 +121,7 @@ for i=1,obj:size() do
 	 end
 	 
 	 --print("DEDDDDDDDDDDDDDDDDDDDDD",filters:size())
-	 
+	 --]]
       end
 
       print(obj:get(i).weight:size())
@@ -95,13 +150,14 @@ print(gradients:size())
 --print(obj:listModules())
 
 
-thin_nn = obj:clone('weightB')
-
-print(thin_nn:size())
-
+--thin_nn = obj:clone('weightB')
+--print(thin_nn:size())
 print(storeW)
 
-torch.save('weightB.t7',storeW)
+saveDir = paths.concat(dir,'weightB.t7')
+
+torch.save(saveDir,storeW)
+
 
 --thin_nn = obj:clone('weight', 'bias', 'gradWeight', 'gradBias')
 
