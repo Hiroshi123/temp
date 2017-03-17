@@ -1,0 +1,49 @@
+
+
+--command line option --
+
+local Opt = require 'class'
+
+
+function Opt:__init()
+   
+end
+
+
+function Opt:get()
+   
+   cmd = torch.CmdLine()
+   cmd:addTime()
+   cmd:text()
+   cmd:text('Training a convolutional network for visual classification')
+   cmd:text()
+   cmd:text('==>Options')
+   
+   cmd:text('===>Model And Training Regime')
+
+   cmd:option('-layerN',       2,            'number of layer')
+
+
+   cmd:option('-modelsFolder',       './Models/',            'Models Folder')
+   cmd:option('-network',            'Model.lua',            'Model file - must return valid network.')
+   cmd:option('-LR',                 2^-6,                    'learning rate')
+   cmd:option('-LRDecay',            0,                     'learning rate decay (in # samples)')
+   cmd:option('-weightDecay',        0.0,                   'L2 penalty on the weights')
+   cmd:option('-momentum',           0.0,                    'momentum')
+   cmd:option('-batchSize',          2,                    'batch size')
+   cmd:option('-stcNeurons',         true,                    'batch size')
+   cmd:option('-stcWeights',         false,                    'batch size')
+   cmd:option('-optimization',       'adam',                  'optimization method')
+   cmd:option('-SBN',                true,                   'shift based batch-normalization')
+   cmd:option('-runningVal',         true,                    'use running mean and std')
+   cmd:option('-iterationN',          10,                     'iteration N')
+   cmd:option('-epochN',              10,                     'number of epochs to train, -1 for unbounded')
+
+   opt = cmd:parse(arg or {})
+
+
+   return opt
+
+end
+
+return Opt

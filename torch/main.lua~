@@ -1,0 +1,71 @@
+
+
+require 'torch'
+require 'xlua'
+require 'optim'
+require 'gnuplot'
+require 'nn'
+require 'class'
+
+function dataSet()   
+   
+   local data = {
+
+      train = {
+	 input = torch.rand(2,3,8,8),
+	 label = torch.rand(2,10)
+      },
+
+      validation = {
+	 input = torch.rand(2,3,8,8),
+	 label = torch.Tensor(2,10)
+      },
+      
+      test = {
+	 input = torch.Tensor(2,3,8,8),
+	 label = torch.Tensor(2,10)
+      }
+   }
+
+   -- data.train.input
+   -- data.train.label
+   -- data.validation.input
+   
+   
+   return data
+   
+end
+
+function modelSet()
+   
+   --local A = class.new('A')
+   --local m = Model.new('')
+   
+   VGG = require 'model'
+   VGG:init(opt)
+   
+   local vgg = VGG:create()   
+   
+   return vgg
+   
+end
+
+
+function main()
+   
+   Opt = require 'opts'   
+   opt = Opt:get()   
+   print(opt)
+   local data = dataSet()
+   local model = modelSet()
+   local Train = require 'train'
+   
+   
+   Train:init(model,data)
+   Train:run("train")
+   --Train:run("validation")
+   --Train:run("test")
+
+end
+
+main()

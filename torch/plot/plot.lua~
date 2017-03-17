@@ -1,0 +1,39 @@
+
+require "gnuplot"
+
+
+local Plot = require 'class'
+
+
+
+function Plot:plotChart()
+
+   gnuplot.figure(1)
+   gnuplot.title(opt.title)
+   
+   if(opt.imageFileExtension == "png") then
+      gnuplot.pngfigure(opt.save .. "/" .. opt.chartFileName .. ".png")
+   end
+   
+   if(opt.imageFileExtension == "eps") then
+      gnuplot.pngfigure(opt.save .. "/" .. opt.chartFileName .. ".eps")
+   end
+   
+   if(opt.imageFileExtension == "pdf") then
+      gnuplot.epsfigure(opt.save .. "/" .. opt.chartFileName .. ".pdf")
+   end
+   
+   if(opt.imageFileExtension == "svg") then
+      gnuplot.svgfigure(opt.save .. "/" .. opt.chartFileName .. ".svg")
+   end
+   
+   gnuplot.plot({'train',trainA[{{1,epoch}}],'-'},{'test',testA[{{1,epoch}}],'-'})
+   
+   gnuplot.xlabel('Epoch (times)')
+   gnuplot.ylabel('Accuracy')
+   gnuplot.plotflush()
+   
+   
+end
+
+

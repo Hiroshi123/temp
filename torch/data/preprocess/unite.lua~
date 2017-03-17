@@ -1,0 +1,40 @@
+
+
+
+
+local UniteT7 =  require 'class'
+
+
+function UniteT7:init()
+   
+   cmd = torch.CmdLine()
+   cmd:addTime()
+   cmd:text()
+   cmd:text('image file to .t7 format')
+   cmd:text()
+   cmd:text('==>Options')
+   
+   cmd:option('-t7_path','/home/leapmind/project/gfk-deep-insight/torch/data/data/', 'path of image')
+   cmd:option('-saveFilePath', '/home/leapmind/project/gfk-deep-insight/torch/data/data/', 'path of output .t7 data')
+   cmd:option('-outFileName','image.t7','output file name')
+   cmd:option('resW',100,'resolution width')
+   cmd:option('resH',100,'resolution height')
+   cmd:option('fileExtension','.jpg','image flle extension')
+   cmd:option('','.jpg','image flle extension')
+   
+   opt = cmd:parse(arg or {})
+   
+   --opt.saveFilePath = opt.imageFilePath
+   
+   --return opt
+
+end
+
+
+function UniteT7:run()
+   
+   
+   
+end
+
+
